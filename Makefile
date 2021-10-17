@@ -1,10 +1,14 @@
 
 CXX=clang++
 CXXFLAGS=-std=c++11 -Wall -Wextra -Wno-unused-parameter -Wno-unused-private-field
-OBJ = ising.o
 
-ising: $(OBJ)
+all: couple sim
+
+couple: couple.o ising.o
+	$(CXX) $(CXXFLAGS) -o $@ $^
+
+sim: sim.o ising.o
 	$(CXX) $(CXXFLAGS) -o $@ $^
 
 clean:
-	/bin/rm -f ising *.o
+	/bin/rm -f ising couple sim *.o
