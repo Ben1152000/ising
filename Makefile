@@ -4,10 +4,10 @@ CXXFLAGS=-std=c++11 -Wall -Wextra -Wno-unused-parameter -Wno-unused-private-fiel
 
 all: couple sim
 
-couple: couple.o ising.o
+couple: couple.o
 	$(CXX) $(CXXFLAGS) -o $@ $^
 
-sim: sim.o ising.o
+sim: sim.o
 	$(CXX) $(CXXFLAGS) -o $@ $^
 
 clean:
