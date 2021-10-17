@@ -5,9 +5,10 @@
 #include <thread>
 #include <chrono>
 
-constexpr int N = 48;
+constexpr int N = 4;
 
 using std::array;
+using std::vector;
 
 std::random_device device;
 std::mt19937 eng(device());
@@ -21,6 +22,10 @@ struct Grid {
     array<bool, N * N> values;
 
     Grid(bool value) {
+        values.fill(value);
+    }
+
+    void reset(bool value) {
         values.fill(value);
     }
 
@@ -57,11 +62,23 @@ struct Grid {
         // std::cout << s << ' ' << p;
         set(i, j, static_cast<bool>(seed < p));
     }
+
+    bool operator==(const Grid& other) {
+        return values == other.values;
+    }
+
+    bool operator!=(const Grid& other) {
+        return values != other.values;
+    }
 };
 
+////////////////////////////////////////////////////////////////////////////////
+//  Implementations                                                           //
+////////////////////////////////////////////////////////////////////////////////
 
-int main() {
-    
+void simulation() {
+    // Simulate infinite temp for 1000 cycles then reduce to 1.
+
     Grid a(0);
     Grid z(1);
 
@@ -81,5 +98,29 @@ int main() {
         z.display();
         std::this_thread::sleep_for (std::chrono::milliseconds(50));
     }
+}
+
+void coupling(double temp) {
+    vector<double> r;
+
+    Grid a(0);
+    Grid z(0);
+
+    do {
+        r.push_back(seed());
+        a.reset(0);
+        z.reset(1);
+        for (auto it = r.rbegin(); it != r.rend(); ++it) {
+            a.update(*it, temp);
+            z.update(*it, temp);
+        }
+    } while (a != z);
+
+    a.display();
+}
+
+int main() {
+    
+    coupling(0.3);
     
 }

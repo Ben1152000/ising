@@ -7,4 +7,4 @@ ising: $(OBJ)
 	$(CXX) $(CXXFLAGS) -o $@ $^
 
 clean:
-	/bin/rm -f test *.o
+	/bin/rm -f ising *.o
